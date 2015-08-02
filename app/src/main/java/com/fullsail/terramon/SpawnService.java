@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 
+import com.fullsail.terramon.Data.SpawnData;
 import com.fullsail.terramon.Globals.Globals;
 import com.google.android.gms.maps.model.LatLng;
 import com.parse.FunctionCallback;
@@ -30,8 +31,10 @@ public class SpawnService extends Service {
 
     private static Timer spawnTimer = new Timer();
     private LatLng userLocation;
-    private int numSpawns;
+    private int numSpawns = 0;
     private int passedNumSpawns;
+
+    private SpawnData spawnData;
 
 
     @Override
@@ -42,7 +45,8 @@ public class SpawnService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        numSpawns = 0;
+
+        spawnData = SpawnData.getInstance(this);
     }
 
 
@@ -85,8 +89,8 @@ public class SpawnService extends Service {
             @Override
             public void run() {
 
-                if (numSpawns < 3) {
-                    Log.d(TAG, "Passed Num Spawns: " + passedNumSpawns + " Num Spawns: " + numSpawns + " Running Service...");
+                if (spawnData.getSpawns().size() < 3) {
+                    Log.d(TAG, "Num Spawns: " + spawnData.getSpawns().size() + " Running Service...");
 
                     ParseGeoPoint userGeoPoint = new ParseGeoPoint(userLocation.latitude, userLocation.longitude);
                     Log.d(TAG, "User Location: Lat: " + userLocation.latitude + " Lng: " + userLocation.longitude);

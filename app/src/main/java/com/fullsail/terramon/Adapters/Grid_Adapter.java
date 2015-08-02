@@ -211,6 +211,13 @@ public class Grid_Adapter extends BaseAdapter {
         ParseUser user = ParseUser.getCurrentUser();
         if (itemID.equals("1J9PEAK7Yw")) { //If itemID is for unlock full purchase, save true to user
             Log.d(TAG, "User Purchasing Full Version");
+            for (ParseObject object : list) {
+                if (object.getObjectId().equals(itemID)) {
+                    list.remove(object);
+                    this.notifyDataSetChanged();
+                }
+            }
+
             user.put("unlockedFullVersion", true);
             user.saveEventually();
             purchaseSuccessful(true);

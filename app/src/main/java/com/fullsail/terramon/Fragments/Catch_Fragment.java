@@ -56,8 +56,6 @@ public class Catch_Fragment extends Fragment implements GestureOverlayView.OnGes
 
     timerThread timer;
 
-    int secsPassed = 0;
-
     /* Gestures */
     private GestureLibrary gestureLibrary;
 
@@ -252,14 +250,15 @@ public class Catch_Fragment extends Fragment implements GestureOverlayView.OnGes
         monstersCaught.add(monster.getObjectId());
         Log.d(TAG, "Monsters Caught: " + monstersCaught);
 
-        spawnData.catchSpawnedMonster(getActivity(), spawnData.getClosestSpawnID());
-
         currentUser.put("monstersCaught", monstersCaught);
         currentUser.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
                 if (e == null) {
                     Log.d(TAG, "Monster Capture Save SUCCESS");
+
+                    spawnData.catchSpawnedMonster(getActivity(), spawnData.getClosestSpawnID());
+
                     Intent intent = new Intent();
                     intent.putExtra("spawnID", spawnID);
                     getActivity().setResult(CatchActivity.RESULT_OK, intent);
@@ -341,7 +340,6 @@ public class Catch_Fragment extends Fragment implements GestureOverlayView.OnGes
                 if (isCancelled()) break;
 
                 secs--;
-                secsPassed++;
 
                 try {
                     Thread.sleep(1000);
@@ -360,10 +358,10 @@ public class Catch_Fragment extends Fragment implements GestureOverlayView.OnGes
 
             //Update UI with progress here
 
-            if (secs <= 9) {
-                timerText.setText(("00:" + "0" + Integer.toString(progress[0])));
+            if (progress[0] < 10) {
+                timerText.setText(("00:" + "0" + progress[0]));
             } else {
-                timerText.setText(("00:" + Integer.toString(progress[0])));
+                timerText.setText(("00:" + progress[0]));
             }
 
         }

@@ -46,7 +46,6 @@ public class SpawnData {
     private String closestSpawnID;
     private Bitmap closestSpawnImage;
     private ParseObject closestSpawn;
-    private int markerNum;
 //endregion
 
 //region Setup
@@ -102,10 +101,6 @@ public class SpawnData {
     public ParseObject getClosestSpawn () {
         return closestSpawn;
     }
-
-    public int getMarkerNum() {
-        return markerNum;
-    }
 //endregion
 
 //region Setter Methods
@@ -120,10 +115,6 @@ public class SpawnData {
 
     public void setClosestSpawn (String closestSpawnID) {
         closestSpawn = spawnedMonsters.get(closestSpawnID);
-    }
-
-    public void setMarkerNum(int markerNum) {
-        this.markerNum = markerNum;
     }
 //region
 
@@ -188,6 +179,7 @@ public class SpawnData {
             public void done(List<ParseObject> list, ParseException e) {
                 Log.d(TAG, "Unpinning All Spawns");
                 spawnedMonsters = new HashMap<String, ParseObject>();
+                spawnedMonstersArray = new ArrayList<ParseObject>();
 
                 ParseObject.unpinAllInBackground(list, new DeleteCallback() {
                     @Override
@@ -206,7 +198,7 @@ public class SpawnData {
         query.fromLocalDatastore();
         query.getInBackground(caughtSpawnID, new GetCallback<ParseObject>() {
             @Override
-            public void done(ParseObject parseObject, ParseException e) {
+            public void done(final ParseObject parseObject, ParseException e) {
                 if (e == null) {
                     parseObject.unpinInBackground(new DeleteCallback() {
                         @Override

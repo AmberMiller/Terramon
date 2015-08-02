@@ -37,6 +37,7 @@ public class Monsters_Fragment extends Fragment {
 
     MonsterBroadcast receiver = new MonsterBroadcast();
     ArrayList<ParseObject> monsters = new ArrayList<>();
+    Grid_Adapter adapter;
 
     /* UI Elements */
     GridView monstersGridView;
@@ -60,9 +61,11 @@ public class Monsters_Fragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        getMonsterList();
+
         monstersGridView = (GridView) getActivity().findViewById(R.id.monstersGridView);
 
-        Grid_Adapter adapter = new Grid_Adapter(getActivity(), getMonsterList(), 1);
+        adapter = new Grid_Adapter(getActivity(), monsters, 1);
         monstersGridView.setAdapter(adapter);
 
         monster_details = (LinearLayout) getActivity().findViewById(R.id.monster_details);
@@ -86,7 +89,7 @@ public class Monsters_Fragment extends Fragment {
         super.onPause();
     }
 
-    private ArrayList<ParseObject> getMonsterList () {
+    private void getMonsterList () {
         ParseUser user = ParseUser.getCurrentUser();
         ArrayList<String> caught = (ArrayList<String>) user.get("monstersCaught");
         if (caught != null) {
@@ -99,15 +102,14 @@ public class Monsters_Fragment extends Fragment {
                     public void done(ParseObject parseObject, ParseException e) {
                         if (e == null) {
                             monsters.add(parseObject);
+                            adapter.notifyDataSetChanged();
                         } else {
                             Log.d(TAG, "MONSTER PULL ERROR: " + e);
                         }
                     }
                 });
             }
-            return monsters;
         }
-        return null;
     }
 
     private void displayMonsterDetails (int position) {

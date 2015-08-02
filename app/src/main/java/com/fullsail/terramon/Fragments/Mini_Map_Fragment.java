@@ -36,9 +36,9 @@ public class Mini_Map_Fragment extends MapFragment implements LocationListener {
     private static final long MIN_TIME = 1000;
     private static final float MIN_DISTANCE = 1f;
     private static final int SPAWN_LIMIT = 3;
-    private static final int VIEW_DISTANCE = 80;
-    private static final int CATCH_DISTANCE = 80;
-    private static final int LOAD_DISTANCE = 80;
+    private static final int VIEW_DISTANCE = 40;
+    private static final int CATCH_DISTANCE = 30;
+    private static final int LOAD_DISTANCE = 50;
 
     private GoogleMap map;
     private LocationManager locationManager;
@@ -160,7 +160,7 @@ public class Mini_Map_Fragment extends MapFragment implements LocationListener {
                     MIN_DISTANCE, // Meters moved between updates.
                     this);
 //        }
-
+        spawnLoad();
     }
 
     @Override
@@ -252,7 +252,6 @@ public class Mini_Map_Fragment extends MapFragment implements LocationListener {
                 Log.d(TAG, "Within viewing range");
                 Intent viewIntent = new Intent(Globals.VIEW_RANGE);
                 viewIntent.putExtra("distance", distance[0]);
-                viewIntent.putExtra("spawnID", closestSpawn.getObjectId());
                 getActivity().sendBroadcast(viewIntent);
 
                 /* If user hasn't completed tutorial, send moved to broadcast */
@@ -318,7 +317,6 @@ public class Mini_Map_Fragment extends MapFragment implements LocationListener {
                         closest = distance[0];
                         Log.d(TAG, "New Closest: " + closest + " Distance[0]: " + distance[0]);
                         closestSpawn = monster;
-                        spawnData.setMarkerNum(i);
                         Log.d(TAG, "Closest Spawn is: "
                                 + closestSpawn.getParseObject("monsterPointer").getString("monsterName")
                                 + " at " + distance[0] + " meters.");
@@ -447,12 +445,6 @@ public class Mini_Map_Fragment extends MapFragment implements LocationListener {
             if (intent.getAction().equals(Globals.LOADED_SPAWNS)) {
                 Log.d(TAG, "Loaded Spawns Broadcast Received");
                 spawnLoad();
-            }
-
-            if (intent.getAction().equals(Globals.CAUGHT_MONSTER)) {
-                Log.d(TAG, "Caught Monster Broadcast Received");
-                monsterMarkers.remove(spawnData.getMarkerNum());
-                addMarkersToMap();
             }
         }
     }

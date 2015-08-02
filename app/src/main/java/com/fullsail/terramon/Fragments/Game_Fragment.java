@@ -196,6 +196,7 @@ public class Game_Fragment extends Fragment implements View.OnClickListener {
         }
 
         spawnedMonsters = spawnData.getSpawns();
+        monsterImages = spawnData.getImages();
     }
 
     @Override
@@ -247,7 +248,7 @@ public class Game_Fragment extends Fragment implements View.OnClickListener {
     /* Set monster image with bitmap from monsterImages map */
     public void setMonsterImage (String currentSpawnID) {
         monsterImages = spawnData.getImages();
-        Log.d(TAG, "Adding Monster Image from Monster Images: " + monsterImages);
+        Log.d(TAG, "Setting Monster Image from Monster Images: " + monsterImages);
 
         Bitmap image = monsterImages.get(currentSpawnID);
         monsterImage.setImageBitmap(image);
@@ -543,8 +544,8 @@ public class Game_Fragment extends Fragment implements View.OnClickListener {
                 float distance = intent.getFloatExtra("distance", 0);
 
                 /* If passed ID is different, set closestSpawnID and change monster image */
-                if (!intent.getStringExtra("spawnID").equals(closestSpawnID)) {
-                    closestSpawnID = intent.getStringExtra("spawnID");
+                if (!spawnData.getClosestSpawnID().equals(closestSpawnID)) {
+                    closestSpawnID = spawnData.getClosestSpawnID();
                     setMonsterImage(closestSpawnID);
 
                     if (detailLayout.getVisibility() == View.VISIBLE) {
