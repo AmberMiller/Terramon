@@ -48,8 +48,8 @@ public class Catch_Fragment extends Fragment implements GestureOverlayView.OnGes
 
     private ParseUser currentUser;
     private SpawnData spawnData;
-    private static String spawnID;
-    private static String monsterID;
+    private String spawnID;
+    private Bitmap monsterImageBitmap;
     private ParseObject monster;
 
     private boolean captureSuccess;
@@ -87,9 +87,7 @@ public class Catch_Fragment extends Fragment implements GestureOverlayView.OnGes
 //endregion
 
 //region Fragment Setup
-    public static Catch_Fragment newInstance (String _spawnID, String _monsterID) {
-        spawnID = _spawnID;
-        monsterID = _monsterID;
+    public static Catch_Fragment newInstance () {
         return new Catch_Fragment();
     }
 
@@ -107,6 +105,10 @@ public class Catch_Fragment extends Fragment implements GestureOverlayView.OnGes
 
         currentUser = ParseUser.getCurrentUser();
         spawnData = SpawnData.getInstance(getActivity());
+
+        spawnID = spawnData.getClosestSpawnID();
+        monsterImageBitmap = spawnData.getClosestSpawnImage();
+        monster = spawnData.getClosestSpawn().getParseObject("monsterPointer");
 
         gestureLibrary = GestureLibraries.fromRawResource(getActivity(), R.raw.gestures);
         if (!gestureLibrary.load()) {
@@ -129,29 +131,9 @@ public class Catch_Fragment extends Fragment implements GestureOverlayView.OnGes
     }
 
     private void getParseMonster () {
-        ParseQuery<ParseObject> query = new ParseQuery<>("MonsterClass");
-        query.fromLocalDatastore();
-        query.getInBackground(monsterID, new GetCallback<ParseObject>() {
-            @Override
-            public void done(ParseObject parseObject, ParseException e) {
-                if (e == null) {
-                    Log.d(TAG, "Current Monster is: " + parseObject.getString("monsterName"));
-                    monster = parseObject;
-                    parseObject.getParseFile("monsterImage").getDataInBackground(new GetDataCallback() {
-                        @Override
-                        public void done(byte[] bytes, ParseException e) {
-                            Bitmap image = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                            monsterImage.setImageBitmap(image);
-                            Log.d(TAG, "Image Set, Starting Game");
-                            startGame();
-                        }
-                    });
-                } else {
-                    Log.d(TAG, "Error finding monster: " + e);
-                    catchError();
-                }
-            }
-        });
+        monsterImage.setImageBitmap(monsterImageBitmap);
+        Log.d(TAG, "Image Set, Starting Game");
+        startGame();
     }
 //endregion
 
@@ -163,6 +145,8 @@ public class Catch_Fragment extends Fragment implements GestureOverlayView.OnGes
         setRequiredGesture();
 
         int secs = numGestures * 4;
+
+
 
         //Set timerThread variable and execute passing in parameters
         timer = new timerThread();
@@ -192,7 +176,7 @@ public class Catch_Fragment extends Fragment implements GestureOverlayView.OnGes
             numGestures = 2;
         }
 
-        Log.d(TAG, "Monster Rarity: " + rarity + " Num Gestures: " + numGestures);
+        Log.d(TAG, "Monster Name: " + monster.getString("monsterName") + " Monster Rarity: " + rarity + " Num Gestures: " + numGestures);
     }
 
     private void setRequiredGesture () {
@@ -265,8 +249,10 @@ public class Catch_Fragment extends Fragment implements GestureOverlayView.OnGes
             monstersCaught = new ArrayList();
         }
 
-        monstersCaught.add(monsterID);
+        monstersCaught.add(monster.getObjectId());
         Log.d(TAG, "Monsters Caught: " + monstersCaught);
+
+        spawnData.catchSpawnedMonster(getActivity(), spawnData.getClosestSpawnID());
 
         currentUser.put("monstersCaught", monstersCaught);
         currentUser.saveInBackground(new SaveCallback() {
@@ -374,7 +360,7 @@ public class Catch_Fragment extends Fragment implements GestureOverlayView.OnGes
 
             //Update UI with progress here
 
-            if (secs < 10) {
+            if (secs <= 9) {
                 timerText.setText(("00:" + "0" + Integer.toString(progress[0])));
             } else {
                 timerText.setText(("00:" + Integer.toString(progress[0])));

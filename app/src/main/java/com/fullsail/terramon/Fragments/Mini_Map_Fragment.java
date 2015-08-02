@@ -14,7 +14,6 @@ import android.util.Log;
 
 import com.fullsail.terramon.Data.SpawnData;
 import com.fullsail.terramon.Globals.Globals;
-import com.fullsail.terramon.Interfaces.Location_Listener;
 import com.fullsail.terramon.R;
 import com.fullsail.terramon.SpawnService;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -34,8 +33,8 @@ public class Mini_Map_Fragment extends MapFragment implements LocationListener {
 
 //region Variables
     public static final String TAG = "MINI_MAP_FRAGMENT";
-    private static final long MIN_TIME = 100;
-    private static final float MIN_DISTANCE = 0.01f;
+    private static final long MIN_TIME = 1000;
+    private static final float MIN_DISTANCE = 1f;
     private static final int SPAWN_LIMIT = 3;
     private static final int VIEW_DISTANCE = 80;
     private static final int CATCH_DISTANCE = 80;
@@ -140,6 +139,7 @@ public class Mini_Map_Fragment extends MapFragment implements LocationListener {
         IntentFilter filter = new IntentFilter();
         filter.addAction(Globals.SPAWNED_MONSTER);
         filter.addAction(Globals.LOADED_SPAWNS);
+        filter.addAction(Globals.CAUGHT_MONSTER);
 
         getActivity().registerReceiver(receiver, filter);
 
@@ -160,6 +160,7 @@ public class Mini_Map_Fragment extends MapFragment implements LocationListener {
                     MIN_DISTANCE, // Meters moved between updates.
                     this);
 //        }
+
     }
 
     @Override
@@ -224,6 +225,9 @@ public class Mini_Map_Fragment extends MapFragment implements LocationListener {
 
         ParseObject closestSpawn = getClosestSpawn(latitude, longitude);
         if (closestSpawn != null) {
+            spawnData.setClosestSpawnImage(closestSpawn.getObjectId());
+            spawnData.setClosestSpawnID(closestSpawn.getObjectId());
+
             float[] distance = new float[1];
 
             Location.distanceBetween(closestSpawn.getParseGeoPoint("monsterLocation").getLatitude(),
@@ -249,8 +253,6 @@ public class Mini_Map_Fragment extends MapFragment implements LocationListener {
                 Intent viewIntent = new Intent(Globals.VIEW_RANGE);
                 viewIntent.putExtra("distance", distance[0]);
                 viewIntent.putExtra("spawnID", closestSpawn.getObjectId());
-                viewIntent.putExtra("monsterName", closestSpawn.getParseObject("monsterPointer").getString("monsterName"));
-                viewIntent.putExtra("monsterCaught", closestSpawn.getParseObject("monsterPointer").getObjectId());
                 getActivity().sendBroadcast(viewIntent);
 
                 /* If user hasn't completed tutorial, send moved to broadcast */
@@ -294,7 +296,8 @@ public class Mini_Map_Fragment extends MapFragment implements LocationListener {
 
         if (spawnedMonsters.size() != 0) {
             Log.d(TAG, "Looping through spawned monsters...");
-            for (final ParseObject monster : spawnedMonsters) {
+            for (int i = 0; i < spawnedMonsters.size(); i++) {
+                ParseObject monster = spawnedMonsters.get(i);
 
                 float[] distance = new float[1];
 
@@ -315,6 +318,7 @@ public class Mini_Map_Fragment extends MapFragment implements LocationListener {
                         closest = distance[0];
                         Log.d(TAG, "New Closest: " + closest + " Distance[0]: " + distance[0]);
                         closestSpawn = monster;
+                        spawnData.setMarkerNum(i);
                         Log.d(TAG, "Closest Spawn is: "
                                 + closestSpawn.getParseObject("monsterPointer").getString("monsterName")
                                 + " at " + distance[0] + " meters.");
@@ -399,6 +403,38 @@ public class Mini_Map_Fragment extends MapFragment implements LocationListener {
             getActivity().stopService(serviceIntent);
         }
     }
+
+    public void spawnLoad () {
+        spawnedMonsters = spawnData.getSpawnsArray();
+
+        if (spawnedMonsters == null) {
+            spawnedMonsters = new ArrayList<>();
+        }
+
+        /* Clear monster markers, add new markers from spawns */
+        monsterMarkers.clear();
+
+        for (ParseObject spawn : spawnedMonsters) {
+            ParseGeoPoint monsterLocation = spawn.getParseGeoPoint("monsterLocation");
+
+            Double lat = monsterLocation.getLatitude();
+            Double lon = monsterLocation.getLongitude();
+            String title = spawn.getObjectId();
+
+            createMarker(lat, lon, title);
+        }
+
+        serviceRan = false;
+        callService();
+
+        if (spawnedMonsters.size() > 0) {
+            Log.d(TAG, "User Played Tutorial: " + currentUser.getBoolean("playedTutorial"));
+            if (!currentUser.getBoolean("playedTutorial")) {
+                Intent tutIntent = new Intent(Globals.TUT_SPAWN_LOADED);
+                getActivity().sendBroadcast(tutIntent);
+            }
+        }
+    }
 //endregion
 
 //region Receiver
@@ -410,30 +446,13 @@ public class Mini_Map_Fragment extends MapFragment implements LocationListener {
             /* Called from SpawnData when local spawns have been loaded */
             if (intent.getAction().equals(Globals.LOADED_SPAWNS)) {
                 Log.d(TAG, "Loaded Spawns Broadcast Received");
-                spawnedMonsters = spawnData.getSpawns();
+                spawnLoad();
+            }
 
-                /* Clear monster markers, add new markers from spawns */
-                monsterMarkers.clear();
-                for (ParseObject spawn : spawnedMonsters) {
-                    ParseGeoPoint monsterLocation = spawn.getParseGeoPoint("monsterLocation");
-
-                    Double lat = monsterLocation.getLatitude();
-                    Double lon = monsterLocation.getLongitude();
-                    String title = spawn.getObjectId();
-
-                    createMarker(lat, lon, title);
-                }
-
-                serviceRan = false;
-                callService();
-
-                if (spawnedMonsters.size() > 0) {
-                    Log.d(TAG, "User Played Tutorial: " + currentUser.getBoolean("playedTutorial"));
-                    if (!currentUser.getBoolean("playedTutorial")) {
-                        Intent tutIntent = new Intent(Globals.TUT_SPAWN_LOADED);
-                        getActivity().sendBroadcast(tutIntent);
-                    }
-                }
+            if (intent.getAction().equals(Globals.CAUGHT_MONSTER)) {
+                Log.d(TAG, "Caught Monster Broadcast Received");
+                monsterMarkers.remove(spawnData.getMarkerNum());
+                addMarkersToMap();
             }
         }
     }

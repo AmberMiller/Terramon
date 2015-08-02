@@ -4,12 +4,16 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Handler;
 import android.util.Log;
 
 import com.fullsail.terramon.Globals.Globals;
 import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
+import com.parse.GetDataCallback;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
@@ -18,6 +22,8 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.util.ArrayList;
+import java.util.Dictionary;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -26,18 +32,27 @@ import java.util.Random;
  */
 public class SpawnData {
 
+//region Variables
     public static final String TAG = "SPAWN_DATA";
 
+    private Context context;
     private static SpawnData instance;
-    private static ArrayList<ParseObject> spawnedMonsters;
     private SpawnReceiver receiver = new SpawnReceiver();
 
-    private SpawnData (Context context) {
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(Globals.SPAWNED_MONSTER);
-        filter.addAction(Globals.MAP_LOADED);
-        filter.addAction(Globals.RARE_SPAWN);
-        context.registerReceiver(receiver, filter);
+    private HashMap<String, ParseObject> spawnedMonsters;
+    private ArrayList<ParseObject> spawnedMonstersArray;
+    private HashMap<String, Bitmap> spawnMonsterImages;
+
+    private String closestSpawnID;
+    private Bitmap closestSpawnImage;
+    private ParseObject closestSpawn;
+    private int markerNum;
+//endregion
+
+//region Setup
+    private SpawnData (Context _context) {
+        context = _context;
+        onStart();
     }
 
     /* Return instance of SpawnData */
@@ -48,15 +63,79 @@ public class SpawnData {
             return instance;
     }
 
+    public void onStart () {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Globals.SPAWNED_MONSTER);
+        filter.addAction(Globals.MAP_LOADED);
+        filter.addAction(Globals.RARE_SPAWN);
+        context.registerReceiver(receiver, filter);
+    }
+
+    public void onStop () {
+        context.unregisterReceiver(receiver);
+    }
+//endregion
+
+//region Getter Methods
     /* Return arraylist of spawns */
-    public ArrayList<ParseObject> getSpawns () {
+    public HashMap<String, ParseObject> getSpawns () {
         return spawnedMonsters;
     }
 
+    public ArrayList<ParseObject> getSpawnsArray () {
+        return spawnedMonstersArray;
+    }
+
+    /* Return map of spawn images */
+    public HashMap<String, Bitmap> getImages () {
+        return spawnMonsterImages;
+    }
+
+    public String getClosestSpawnID () {
+        return closestSpawnID;
+    }
+
+    public Bitmap getClosestSpawnImage () {
+        return closestSpawnImage;
+    }
+
+    public ParseObject getClosestSpawn () {
+        return closestSpawn;
+    }
+
+    public int getMarkerNum() {
+        return markerNum;
+    }
+//endregion
+
+//region Setter Methods
+    public void setClosestSpawnID (String closestID) {
+        closestSpawnID = closestID;
+        setClosestSpawn(closestSpawnID);
+    }
+
+    public void setClosestSpawnImage (String closestID) {
+        closestSpawnImage = spawnMonsterImages.get(closestID);
+    }
+
+    public void setClosestSpawn (String closestSpawnID) {
+        closestSpawn = spawnedMonsters.get(closestSpawnID);
+    }
+
+    public void setMarkerNum(int markerNum) {
+        this.markerNum = markerNum;
+    }
+//region
+
+//region Data Pulls
     /* Get Spawned Monsters from Local Datastore */
     private void getLocalSpawnedMonsters (final Context context) {
         if (spawnedMonsters == null) {
-            spawnedMonsters = new ArrayList<>();
+            spawnedMonsters = new HashMap<>();
+        }
+
+        if (spawnedMonstersArray == null) {
+            spawnedMonstersArray = new ArrayList<>();
         }
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("SpawnClass");
@@ -66,14 +145,36 @@ public class SpawnData {
             public void done(List<ParseObject> list, ParseException e) {
                 Log.d(TAG, "Got Spawns from Local Storage, Adding to Array...");
                 spawnedMonsters.clear();
+                spawnedMonstersArray.clear();
 
                 for (ParseObject object : list) {
-                    spawnedMonsters.add(object);
+                    spawnedMonsters.put(object.getObjectId(), object);
+                    spawnedMonstersArray.add(object);
+
+                    getSpawnImage(object);
                 }
-                Log.d(TAG, "Spawned Monsters Num: " + spawnedMonsters.size());
+                Log.d(TAG, "Sending LOADED_SPAWNS Broadcast, Spawned Monsters Num: " + spawnedMonsters.size());
 
                 Intent intent = new Intent(Globals.LOADED_SPAWNS);
                 context.sendBroadcast(intent);
+            }
+        });
+    }
+
+    /* Gets Spawn Monster Image Data and Converts to Bitmap */
+    private void getSpawnImage (final ParseObject spawn) {
+        if (spawnMonsterImages == null) {
+            spawnMonsterImages = new HashMap<>();
+        }
+
+        final ParseObject monsterSpawn = spawn.getParseObject("monsterPointer");
+        monsterSpawn.getParseFile("monsterImage").getDataInBackground(new GetDataCallback() {
+            @Override
+            public void done(byte[] bytes, ParseException e) {
+                if (bytes != null) {
+                    Bitmap image = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                    spawnMonsterImages.put(spawn.getObjectId(), image);
+                }
             }
         });
     }
@@ -86,7 +187,7 @@ public class SpawnData {
             @Override
             public void done(List<ParseObject> list, ParseException e) {
                 Log.d(TAG, "Unpinning All Spawns");
-                spawnedMonsters = new ArrayList<>();
+                spawnedMonsters = new HashMap<String, ParseObject>();
 
                 ParseObject.unpinAllInBackground(list, new DeleteCallback() {
                     @Override
@@ -170,7 +271,9 @@ public class SpawnData {
             }
         });
     }
+//endregion
 
+//region Receiver
     public class SpawnReceiver extends BroadcastReceiver {
 
         @Override
@@ -202,4 +305,5 @@ public class SpawnData {
             }
         }
     }
+//endregion
 }

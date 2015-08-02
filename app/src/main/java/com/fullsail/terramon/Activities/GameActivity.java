@@ -77,7 +77,6 @@ public class GameActivity extends Activity implements Button_Interface {
                 .commit();
     }
 
-
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);

@@ -53,13 +53,10 @@ public class Game_Fragment extends Fragment implements View.OnClickListener {
 
     private int currentTut;
     private boolean spawnLoaded;
-    private ArrayList<ParseObject> spawnedMonsters;
-    private Map<String, byte[]> monsterImages;
+    private HashMap<String, ParseObject> spawnedMonsters;
+    private HashMap<String, Bitmap> monsterImages;
     private String closestSpawnID;
-    private String monsterCaught;
     private ParseUser currentUser;
-    private byte[] closestMonsterImage;
-    private String monsterCaughtName;
 
     /* UI Elements */
     private ImageButton settingsButton;
@@ -119,7 +116,7 @@ public class Game_Fragment extends Fragment implements View.OnClickListener {
 
         spawnData = SpawnData.getInstance(getActivity());
         currentUser = ParseUser.getCurrentUser();
-        spawnedMonsters = new ArrayList<>();
+        spawnedMonsters = new HashMap<>();
         monsterImages = new HashMap<>();
 
         /* UI Elements */
@@ -190,11 +187,15 @@ public class Game_Fragment extends Fragment implements View.OnClickListener {
 
         getActivity().registerReceiver(receiver, filter);
 
+        spawnData.onStart();
+
         currentUser = ParseUser.getCurrentUser();
         if (currentUser.getBoolean("playedTutorial")) {
             tutorialLayout.setVisibility(View.GONE);
             enableButtons();
         }
+
+        spawnedMonsters = spawnData.getSpawns();
     }
 
     @Override
@@ -204,7 +205,14 @@ public class Game_Fragment extends Fragment implements View.OnClickListener {
         super.onPause();
     }
 
-//endregion
+    @Override
+    public void onStop() {
+        spawnData.onStop();
+
+        super.onStop();
+    }
+
+    //endregion
 
 //region Functionality
     /* Disable All Buttons */
@@ -236,17 +244,13 @@ public class Game_Fragment extends Fragment implements View.OnClickListener {
         currentTut = 1;
     }
 
-    /* Set monster image with byte array from monsterImages dictionary */
+    /* Set monster image with bitmap from monsterImages map */
     public void setMonsterImage (String currentSpawnID) {
+        monsterImages = spawnData.getImages();
         Log.d(TAG, "Adding Monster Image from Monster Images: " + monsterImages);
-        byte[] bytes = monsterImages.get(currentSpawnID);
-        Log.d(TAG, "ID: " + currentSpawnID + " Bytes: " + bytes);
 
-        closestMonsterImage = bytes;
-        if (bytes != null) {
-            Bitmap image = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-            monsterImage.setImageBitmap(image);
-        }
+        Bitmap image = monsterImages.get(currentSpawnID);
+        monsterImage.setImageBitmap(image);
     }
 
     /* If monster image is not visible, show it */
@@ -283,36 +287,42 @@ public class Game_Fragment extends Fragment implements View.OnClickListener {
     }
 
     /* Show Monster Details */
-    public void showMonsterDetails (String name, String desc, int num, String type) {
-        Log.d(TAG, "Name: " + name + " Desc: " + desc + " Num: " + num + " Type: " + type);
+    public void showMonsterDetails () {
+        ParseObject monster = spawnData.getClosestSpawn();
+        if (monster != null) {
+            String name = monster.getParseObject("monsterPointer").getString("monsterName");
+            String desc = monster.getParseObject("monsterPointer").getString("monsterDescription");
+            int num = monster.getParseObject("monsterPointer").getInt("monsterNum");
+            String type = monster.getParseObject("monsterPointer").getString("monsterType");
 
-        monsterCaughtName = name;
+            Log.d(TAG, "Name: " + name + " Desc: " + desc + " Num: " + num + " Type: " + type);
 
-        if (detailLayout.getVisibility() == View.VISIBLE) {
-            detailLayout.setVisibility(View.INVISIBLE);
-        } else {
-            monsterName.setText(name);
-            monsterDescription.setText(desc);
-            monsterNumber.setText("#" + num);
+            if (detailLayout.getVisibility() == View.VISIBLE) {
+                detailLayout.setVisibility(View.INVISIBLE);
+            } else {
+                monsterName.setText(name);
+                monsterDescription.setText(desc);
+                monsterNumber.setText("#" + num);
 
-            switch (type) {
-                case "Fire":
-                    monsterDetails.setImageResource(R.drawable.details_fire);
-                    break;
-                case "Water":
-                    monsterDetails.setImageResource(R.drawable.details_water);
-                    break;
-                case "Air":
-                    monsterDetails.setImageResource(R.drawable.details_air);
-                    break;
-                case "Earth":
-                    monsterDetails.setImageResource(R.drawable.details_earth);
-                    break;
-                case "Psychic":
-                    monsterDetails.setImageResource(R.drawable.details_psychic);
-                    break;
+                switch (type) {
+                    case "Fire":
+                        monsterDetails.setImageResource(R.drawable.details_fire);
+                        break;
+                    case "Water":
+                        monsterDetails.setImageResource(R.drawable.details_water);
+                        break;
+                    case "Air":
+                        monsterDetails.setImageResource(R.drawable.details_air);
+                        break;
+                    case "Earth":
+                        monsterDetails.setImageResource(R.drawable.details_earth);
+                        break;
+                    case "Psychic":
+                        monsterDetails.setImageResource(R.drawable.details_psychic);
+                        break;
+                }
+                detailLayout.setVisibility(View.VISIBLE);
             }
-            detailLayout.setVisibility(View.VISIBLE);
         }
     }
 
@@ -324,12 +334,10 @@ public class Game_Fragment extends Fragment implements View.OnClickListener {
 
         caughtLayout.setVisibility(View.VISIBLE);
 
-        caughtText.setText(getResources().getString(R.string.caught) + " " + monsterCaughtName + "!");
+        String name = spawnData.getClosestSpawn().getParseObject("monsterPointer").getString("monsterName");
+        caughtText.setText(getResources().getString(R.string.caught) + " " + name + "!");
 
-        if (closestMonsterImage != null) {
-            Bitmap image = BitmapFactory.decodeByteArray(closestMonsterImage, 0, closestMonsterImage.length);
-            caughtImage.setImageBitmap(image);
-        }
+        caughtImage.setImageBitmap(spawnData.getClosestSpawnImage());
 
         Log.d(TAG, "User Played Tutorial: " + currentUser.getBoolean("playedTutorial"));
         if (!currentUser.getBoolean("playedTutorial")) {
@@ -437,8 +445,6 @@ public class Game_Fragment extends Fragment implements View.OnClickListener {
         } else {
             catchButton.setEnabled(false);
             Intent catchIntent = new Intent(getActivity(), CatchActivity.class);
-            catchIntent.putExtra("spawnID", closestSpawnID);
-            catchIntent.putExtra("monsterID", monsterCaught);
             startActivityForResult(catchIntent, Globals.CATCH_REQUEST);
         }
     }
@@ -447,15 +453,7 @@ public class Game_Fragment extends Fragment implements View.OnClickListener {
     private void monsterImageClick () {
         if (closestSpawnID != null) {
             if (monsterImage.getVisibility() == View.VISIBLE) {
-                for (ParseObject spawn : spawnedMonsters) {
-                    if (closestSpawnID.equals(spawn.getObjectId())) {
-                        ParseObject monster = spawn.getParseObject("monsterPointer");
-                        showMonsterDetails(monster.getString("monsterName"),
-                                monster.getString("monsterDescription"),
-                                monster.getInt("monsterNum"),
-                                monster.getString("monsterType"));
-                    }
-                }
+                showMonsterDetails();
             }
 
             Log.d(TAG, "User Played Tutorial: " + currentUser.getBoolean("playedTutorial"));
@@ -507,8 +505,10 @@ public class Game_Fragment extends Fragment implements View.OnClickListener {
                     moveToTut7();
                 }
                 catchButton.setEnabled(true);
-                spawnData.catchSpawnedMonster(getActivity(), data.getStringExtra("spawnID"));
                 showCaughtDialog();
+
+                Intent intent = new Intent(Globals.CAUGHT_MONSTER);
+                getActivity().sendBroadcast(intent);
             } else {
                 Log.d(TAG, "RESULT NOT OK");
             }
@@ -530,32 +530,16 @@ public class Game_Fragment extends Fragment implements View.OnClickListener {
             }
 
             if (intent.getAction().equals(Globals.SHOW_DETAILS)) {
-                showMonsterDetails(intent.getStringExtra("name"),
-                        intent.getStringExtra("desc"),
-                        intent.getIntExtra("num", 0),
-                        intent.getStringExtra("type"));
+                showMonsterDetails();
             }
 
             if (intent.getAction().equals(Globals.LOADED_SPAWNS)) {
                 spawnedMonsters = spawnData.getSpawns();
-                monsterImages.clear();
-                /* Preload spawn images */
-                for (final ParseObject spawn : spawnedMonsters) {
-                    final ParseObject monsterSpawn = spawn.getParseObject("monsterPointer");
-                    monsterSpawn.getParseFile("monsterImage").getDataInBackground(new GetDataCallback() {
-                        @Override
-                        public void done(byte[] bytes, ParseException e) {
-                            monsterImages.put(spawn.getObjectId(), bytes);
-                        }
-                    });
-                }
             }
 
             if (intent.getAction().equals(Globals.VIEW_RANGE)) {
                 Log.d(TAG, "Location Changed Broadcast Received");
 
-                monsterCaught = intent.getStringExtra("monsterCaught");
-                monsterCaughtName = intent.getStringExtra("monsterName");
                 float distance = intent.getFloatExtra("distance", 0);
 
                 /* If passed ID is different, set closestSpawnID and change monster image */

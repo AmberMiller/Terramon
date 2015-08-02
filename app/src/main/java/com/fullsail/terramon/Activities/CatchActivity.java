@@ -26,10 +26,6 @@ public class CatchActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_catch);
 
-        Intent intent = getIntent();
-        String spawnID = intent.getStringExtra("spawnID");
-        String monsterID = intent.getStringExtra("monsterID");
-
         hideSystemBars();
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -37,7 +33,7 @@ public class CatchActivity extends Activity {
         fragmentManager = getFragmentManager();
 
         fragmentManager.beginTransaction()
-                .replace(R.id.CatchContainer, Catch_Fragment.newInstance(spawnID, monsterID), Catch_Fragment.TAG)
+                .replace(R.id.CatchContainer, Catch_Fragment.newInstance(), Catch_Fragment.TAG)
                 .commit();
     }
 
