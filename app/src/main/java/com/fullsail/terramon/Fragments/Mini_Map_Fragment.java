@@ -36,9 +36,9 @@ public class Mini_Map_Fragment extends MapFragment implements LocationListener {
     private static final long MIN_TIME = 1000;
     private static final float MIN_DISTANCE = 1f;
     private static final int SPAWN_LIMIT = 3;
-    private static final int VIEW_DISTANCE = 40;
-    private static final int CATCH_DISTANCE = 30;
-    private static final int LOAD_DISTANCE = 50;
+    private static final int VIEW_DISTANCE = 30;
+    private static final int CATCH_DISTANCE = 20;
+    private static final int LOAD_DISTANCE = 40;
 
     private GoogleMap map;
     private LocationManager locationManager;
@@ -160,7 +160,7 @@ public class Mini_Map_Fragment extends MapFragment implements LocationListener {
                     MIN_DISTANCE, // Meters moved between updates.
                     this);
 //        }
-        spawnLoad();
+        loadSpawnsForMarkers();
     }
 
     @Override
@@ -402,11 +402,13 @@ public class Mini_Map_Fragment extends MapFragment implements LocationListener {
         }
     }
 
-    public void spawnLoad () {
+    public void loadSpawnsForMarkers () {
         spawnedMonsters = spawnData.getSpawnsArray();
 
         if (spawnedMonsters == null) {
             spawnedMonsters = new ArrayList<>();
+        } else {
+            spawnLoad();
         }
 
         /* Clear monster markers, add new markers from spawns */
@@ -421,6 +423,11 @@ public class Mini_Map_Fragment extends MapFragment implements LocationListener {
 
             createMarker(lat, lon, title);
         }
+
+    }
+
+    public void spawnLoad () {
+        spawnedMonsters = spawnData.getSpawnsArray();
 
         serviceRan = false;
         callService();
@@ -444,7 +451,7 @@ public class Mini_Map_Fragment extends MapFragment implements LocationListener {
             /* Called from SpawnData when local spawns have been loaded */
             if (intent.getAction().equals(Globals.LOADED_SPAWNS)) {
                 Log.d(TAG, "Loaded Spawns Broadcast Received");
-                spawnLoad();
+                loadSpawnsForMarkers();
             }
         }
     }

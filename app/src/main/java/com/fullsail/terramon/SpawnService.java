@@ -89,8 +89,14 @@ public class SpawnService extends Service {
             @Override
             public void run() {
 
-                if (spawnData.getSpawns().size() < 3) {
-                    Log.d(TAG, "Num Spawns: " + spawnData.getSpawns().size() + " Running Service...");
+                if (spawnData.getSpawns() != null) {
+                    numSpawns = spawnData.getSpawns().size();
+                } else {
+                    numSpawns = 0;
+                }
+
+                if (numSpawns < 3) {
+                    Log.d(TAG, "Num Spawns: " + numSpawns + " Running Service...");
 
                     ParseGeoPoint userGeoPoint = new ParseGeoPoint(userLocation.latitude, userLocation.longitude);
                     Log.d(TAG, "User Location: Lat: " + userLocation.latitude + " Lng: " + userLocation.longitude);

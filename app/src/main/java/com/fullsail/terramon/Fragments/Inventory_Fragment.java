@@ -84,6 +84,9 @@ public class Inventory_Fragment extends Fragment {
 
         inventoryGridView = (GridView) getActivity().findViewById(R.id.inventoryGridView);
 
+        adapter = new Grid_Adapter(getActivity(), items, 0);
+        inventoryGridView.setAdapter(adapter);
+
         itemDetailView = (RelativeLayout) getActivity().findViewById(R.id.item_detail_view);
         itemImage = (ImageView) getActivity().findViewById(R.id.item_detail_image);
         itemTitle = (TextView) getActivity().findViewById(R.id.item_detail_title);
@@ -147,13 +150,8 @@ public class Inventory_Fragment extends Fragment {
 
 //endregion
 
-    private void setGridAdapter () {
-        Log.d(TAG, "Setting Grid Adapter");
-        adapter = new Grid_Adapter(getActivity(), items, 0);
-        inventoryGridView.setAdapter(adapter);
-    }
-
     private void getItemList () {
+        Log.d(TAG, "Getting item list...");
         try {
             JSONArray array = user.getJSONArray("itemsOwned");
             if (array != null) {
@@ -175,7 +173,7 @@ public class Inventory_Fragment extends Fragment {
                             Log.d(TAG, "Item Returned");
                             parseObject.put("numItemsOwned", num);
                             items.add(parseObject);
-                            setGridAdapter();
+                            adapter.notifyDataSetChanged();
 
                             useButton.setEnabled(true);
                             closeButton.setEnabled(true);

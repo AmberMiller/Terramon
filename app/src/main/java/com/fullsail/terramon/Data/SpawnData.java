@@ -51,7 +51,12 @@ public class SpawnData {
 //region Setup
     private SpawnData (Context _context) {
         context = _context;
-        onStart();
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Globals.SPAWNED_MONSTER);
+        filter.addAction(Globals.MAP_LOADED);
+        filter.addAction(Globals.RARE_SPAWN);
+        context.registerReceiver(receiver, filter);
     }
 
     /* Return instance of SpawnData */
@@ -60,14 +65,6 @@ public class SpawnData {
             instance = new SpawnData(context);
         }
             return instance;
-    }
-
-    public void onStart () {
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(Globals.SPAWNED_MONSTER);
-        filter.addAction(Globals.MAP_LOADED);
-        filter.addAction(Globals.RARE_SPAWN);
-        context.registerReceiver(receiver, filter);
     }
 
     public void onStop () {

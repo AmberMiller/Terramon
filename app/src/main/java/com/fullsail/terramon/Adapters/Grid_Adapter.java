@@ -28,6 +28,7 @@ import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -255,8 +256,12 @@ public class Grid_Adapter extends BaseAdapter {
                             .put("itemID", itemID)));
                 }
 
-                user.saveEventually();
-                purchaseSuccessful(false);
+                user.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        purchaseSuccessful(false);
+                    }
+                });
             } catch (Exception e) {
                 e.printStackTrace();
                 new AlertDialog.Builder(context)

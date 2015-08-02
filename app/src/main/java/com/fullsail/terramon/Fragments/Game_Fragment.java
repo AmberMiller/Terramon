@@ -13,8 +13,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,15 +32,11 @@ import com.fullsail.terramon.Data.SpawnData;
 import com.fullsail.terramon.Globals.Globals;
 import com.fullsail.terramon.Interfaces.Button_Interface;
 import com.fullsail.terramon.R;
-import com.parse.GetDataCallback;
-import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class Game_Fragment extends Fragment implements View.OnClickListener {
 
@@ -53,10 +49,12 @@ public class Game_Fragment extends Fragment implements View.OnClickListener {
 
     private int currentTut;
     private boolean spawnLoaded;
-    private HashMap<String, ParseObject> spawnedMonsters;
     private HashMap<String, Bitmap> monsterImages;
     private String closestSpawnID;
     private ParseUser currentUser;
+
+    private boolean catchingMonster;
+    private int catchingTimeOut;
 
     /* UI Elements */
     private ImageButton settingsButton;
@@ -85,6 +83,27 @@ public class Game_Fragment extends Fragment implements View.OnClickListener {
     private TextView caughtText;
 
 //endregion
+
+    Handler handler = new Handler();
+    Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+        //If catchingMonster is true, wait 30s,
+        // if waited 60s, set catchingMonster to false and remove callbacks,
+        // else remove callbacks so that monsterImage and catchButton can be shown again
+
+            if (catchingMonster && catchingTimeOut > 60000) {
+                catchingMonster = false;
+                handler.removeCallbacks(this);
+            } else if (catchingMonster) {
+                Log.d(TAG, "Catching monster, waiting 30s...");
+                catchingTimeOut += 30000;
+                handler.postDelayed(this, 30000);
+            } else {
+                handler.removeCallbacks(this);
+            }
+        }
+    };
 
 //region Fragment Setup
     public static Game_Fragment newInstance () {
@@ -116,7 +135,6 @@ public class Game_Fragment extends Fragment implements View.OnClickListener {
 
         spawnData = SpawnData.getInstance(getActivity());
         currentUser = ParseUser.getCurrentUser();
-        spawnedMonsters = new HashMap<>();
         monsterImages = new HashMap<>();
 
         /* UI Elements */
@@ -170,7 +188,6 @@ public class Game_Fragment extends Fragment implements View.OnClickListener {
     @Override
     public void onResume() {
         super.onResume();
-        Log.d(TAG, "onResume");
 
         IntentFilter filter = new IntentFilter();
         filter.addAction(Globals.SHOW_CATCH);
@@ -187,15 +204,12 @@ public class Game_Fragment extends Fragment implements View.OnClickListener {
 
         getActivity().registerReceiver(receiver, filter);
 
-        spawnData.onStart();
-
         currentUser = ParseUser.getCurrentUser();
         if (currentUser.getBoolean("playedTutorial")) {
             tutorialLayout.setVisibility(View.GONE);
             enableButtons();
         }
 
-        spawnedMonsters = spawnData.getSpawns();
         monsterImages = spawnData.getImages();
     }
 
@@ -205,15 +219,7 @@ public class Game_Fragment extends Fragment implements View.OnClickListener {
 
         super.onPause();
     }
-
-    @Override
-    public void onStop() {
-        spawnData.onStop();
-
-        super.onStop();
-    }
-
-    //endregion
+//endregion
 
 //region Functionality
     /* Disable All Buttons */
@@ -256,8 +262,12 @@ public class Game_Fragment extends Fragment implements View.OnClickListener {
 
     /* If monster image is not visible, show it */
     public void showMonsterImage () {
-        Log.d(TAG, "Within view range, showing monster image...");
-        monsterImage.setVisibility(View.VISIBLE);
+        if (!catchingMonster) {
+            Log.d(TAG, "Within view range, showing monster image...");
+            monsterImage.setVisibility(View.VISIBLE);
+        } else {
+            Log.d(TAG, "catchingMonster is true, not showing monster image");
+        }
     }
 
     /* Make monster image invisible */
@@ -276,9 +286,13 @@ public class Game_Fragment extends Fragment implements View.OnClickListener {
 
     /* Show the Catch Button */
     public void showCatchButton () {
-        Log.d(TAG, "Showing Catch Button");
-        catchButton.setVisibility(View.VISIBLE);
-        catchButton.setEnabled(true);
+        if (!catchingMonster) {
+            Log.d(TAG, "Showing Catch Button");
+            catchButton.setVisibility(View.VISIBLE);
+            catchButton.setEnabled(true);
+        } else {
+            Log.d(TAG, "catchingMonster is true, not showing catch button");
+        }
     }
 
     /* Hide the Catch Button */
@@ -430,6 +444,9 @@ public class Game_Fragment extends Fragment implements View.OnClickListener {
         List monstersCaught = currentUser.getList("monstersCaught");
         Log.d(TAG, "Monsters Caught: " + monstersCaught);
 
+        hideCatchButton();
+        hideMonsterImage();
+
         /* If user hasn't unlocked full version, alert user that full version must be purchased to continue */
         if (monstersCaught!= null && monstersCaught.size() == 5 && !currentUser.getBoolean("unlockedFullVersion")) {
              new AlertDialog.Builder(getActivity())
@@ -444,6 +461,7 @@ public class Game_Fragment extends Fragment implements View.OnClickListener {
                     .setNegativeButton(getActivity().getResources().getString(R.string.ok), null)
                     .show();
         } else {
+            catchingMonster = true;
             catchButton.setEnabled(false);
             Intent catchIntent = new Intent(getActivity(), CatchActivity.class);
             startActivityForResult(catchIntent, Globals.CATCH_REQUEST);
@@ -500,19 +518,14 @@ public class Game_Fragment extends Fragment implements View.OnClickListener {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Globals.CATCH_REQUEST) {
+            catchingMonster = true;
             if (resultCode == GameActivity.RESULT_OK) {
                 Log.d(TAG, "RESULT OK");
-                if (!currentUser.getBoolean("playedTutorial")) {
-                    moveToTut7();
-                }
-                catchButton.setEnabled(true);
                 showCaughtDialog();
-
-                Intent intent = new Intent(Globals.CAUGHT_MONSTER);
-                getActivity().sendBroadcast(intent);
             } else {
                 Log.d(TAG, "RESULT NOT OK");
             }
+            handler.post(runnable);
         }
     }
 
@@ -535,7 +548,8 @@ public class Game_Fragment extends Fragment implements View.OnClickListener {
             }
 
             if (intent.getAction().equals(Globals.LOADED_SPAWNS)) {
-                spawnedMonsters = spawnData.getSpawns();
+                monsterImages = spawnData.getImages();
+                catchingMonster = false;
             }
 
             if (intent.getAction().equals(Globals.VIEW_RANGE)) {
