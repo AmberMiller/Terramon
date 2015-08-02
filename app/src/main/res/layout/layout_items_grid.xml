@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/item_view"
+            android:layout_alignStart="@+id/item_view"
+            android:layout_alignEnd="@+id/item_view"
+            android:layout_marginTop="18dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_alignBottom="@+id/item_view"
+            android:layout_marginBottom="135dp"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:src="@drawable/placeholder"
+            android:id="@+id/item_image" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"
+            android:src="@drawable/item_view"
+            android:id="@+id/item_view" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="This is an item name, it might possibly be long"
+            android:id="@+id/item_name"
+            android:layout_marginBottom="25dp"
+            android:layout_alignBottom="@+id/item_view"
+            android:layout_alignStart="@+id/item_view"
+            android:layout_alignEnd="@+id/item_view"
+            android:textColor="@android:color/white"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:gravity="center"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="x99"
+            android:id="@+id/num_items"
+            android:layout_alignEnd="@+id/item_view"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="10dp"
+            android:textColor="@android:color/white"
+            android:layout_above="@+id/item_name" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

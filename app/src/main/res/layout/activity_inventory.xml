@@ -1,0 +1,60 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/menu_background"
+    tools:context="com.fullsail.terramon.Activities.InventoryActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.18"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:scaleType="fitStart"
+            android:src="@drawable/inventory_head1"
+            android:adjustViewBounds="true"
+            android:id="@+id/inventoryHead1" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:adjustViewBounds="true"
+                android:src="@drawable/inventory_head2"
+                android:id="@+id/inventoryHead2" />
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:paddingEnd="5dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="25dp"
+                android:background="@android:color/transparent"
+                android:scaleType="centerInside"
+                android:adjustViewBounds="true"
+                android:src="@drawable/back_button"
+                android:id="@+id/inventory_back_button"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.82"
+        android:id="@+id/InventoryContainer"/>
+
+
+</LinearLayout>

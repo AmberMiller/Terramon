@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_vertical|center_horizontal">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/shop_view"
+            android:layout_alignEnd="@+id/shop_view"
+            android:layout_alignBottom="@+id/shop_view"
+            android:layout_marginBottom="48dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_below="@+id/shop_price"
+            android:scaleType="fitCenter"
+            android:src="@drawable/placeholder"
+            android:id="@+id/shop_item_image" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/shop_view"
+            android:src="@drawable/shop_view"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Item Title"
+            android:id="@+id/shop_title"
+            android:layout_alignParentTop="false"
+            android:layout_centerHorizontal="true"
+            android:layout_alignStart="@+id/shop_view"
+            android:layout_alignEnd="@+id/shop_view"
+            android:gravity="center"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:textColor="@android:color/white" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Item Title 2"
+            android:id="@+id/shop_title2"
+            android:layout_below="@+id/shop_title"
+            android:layout_centerHorizontal="true"
+            android:textColor="@android:color/white"
+            android:layout_alignStart="@+id/shop_title"
+            android:layout_alignEnd="@+id/shop_title"
+            android:gravity="center" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
+            android:text="$99.99"
+            android:id="@+id/shop_price"
+            android:layout_below="@+id/shop_title2"
+            android:layout_alignStart="@+id/shop_title"
+            android:textColor="@android:color/white"
+            android:layout_marginTop="-5dp" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/buy_button"
+            android:layout_alignParentBottom="false"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/buy_button"
+            android:background="@android:color/transparent"
+            android:layout_alignStart="@+id/shop_item_image"
+            android:layout_alignEnd="@+id/shop_item_image"
+            android:scaleType="fitCenter"
+            android:layout_alignBottom="@+id/shop_view"
+            android:layout_marginTop="-42dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_below="@+id/shop_item_image"
+            android:layout_marginBottom="7dp" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

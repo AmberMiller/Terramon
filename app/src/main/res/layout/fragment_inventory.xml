@@ -1,0 +1,106 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    tools:context="com.fullsail.terramon.Fragments.Inventory_Fragment">
+
+    <GridView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:numColumns="auto_fit"
+        android:gravity="center"
+        android:id="@+id/inventoryGridView"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="10dp"
+        android:visibility="gone"
+        android:id="@+id/item_detail_view">
+
+        <ImageView
+            android:layout_width="220dp"
+            android:layout_height="147dp"
+            android:layout_marginTop="18dp"
+            android:layout_marginStart="108dp"
+            android:src="@drawable/placeholder"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:id="@+id/item_detail_image" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/item_detail_view"
+            android:layout_centerInParent="true"
+            android:adjustViewBounds="true"
+            android:id="@+id/item_detail_view_image" />
+
+        <ImageButton
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-12dp"
+            android:layout_marginEnd="-20dp"
+            android:layout_alignTop="@+id/item_detail_view_image"
+            android:layout_alignEnd="@+id/item_detail_view_image"
+            android:background="@android:color/transparent"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:src="@drawable/close_button"
+            android:id="@+id/item_detail_close_button"/>
+
+        <TextView
+            android:layout_width="170dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="-10dp"
+            android:layout_marginEnd="12dp"
+            android:layout_alignEnd="@+id/item_detail_view_image"
+            android:layout_below="@+id/item_detail_close_button"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="This is the Item Title"
+            android:textColor="@android:color/white"
+            android:gravity="center_horizontal"
+            android:id="@+id/item_detail_title"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginTop="5dp"
+            android:layout_alignEnd="@id/item_detail_title"
+            android:layout_below="@id/item_detail_title"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@android:color/white"
+            android:text="x999"
+            android:id="@+id/item_detail_num"/>
+
+        <ImageButton
+            android:layout_width="170dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:adjustViewBounds="true"
+            android:layout_below="@id/item_detail_num"
+            android:layout_alignEnd="@id/item_detail_title"
+            android:background="@android:color/transparent"
+            android:scaleType="fitCenter"
+            android:src="@drawable/use_button"
+            android:id="@+id/item_use_button"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="70dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="10dp"
+            android:layout_alignBottom="@+id/item_detail_view_image"
+            android:layout_alignStart="@+id/item_detail_view_image"
+            android:layout_alignEnd="@+id/item_detail_view_image"
+            android:gravity="center"
+            android:text="This is the description for the item. Blah blah blah"
+            android:textColor="@android:color/white"
+            android:id="@+id/item_detail_description"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -1,0 +1,14 @@
+{
+  "global": {
+    "parseVersion": "1.4.2"
+  },
+  "applications": {
+    "Terramon": {
+      "applicationId": "ICnUrdMNEVEFXFtiuQWJ7Et7vXkTch2dCqBAM2kR",
+      "masterKey": "Cu7R2P0GFEOWJEPB5f8dkcYOD530sxV0VUfue7R2"
+    },
+    "_default": {
+      "link": "Terramon"
+    }
+  }
+}

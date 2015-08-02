@@ -1,0 +1,257 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.fullsail.terramon.Fragments.Game_Fragment">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/buttonOverlay">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.8"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/overlay_settings"
+                android:background="@android:color/transparent"
+                android:scaleType="fitStart"
+                android:layout_weight="0.1"
+                android:layout_marginEnd="5dp"
+                android:id="@+id/settingsButton"
+                android:adjustViewBounds="true" />
+
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/overlay_inventory"
+                android:background="@android:color/transparent"
+                android:scaleType="fitStart"
+                android:layout_weight="0.3"
+                android:layout_gravity="top"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:id="@+id/inventoryButton"
+                android:adjustViewBounds="true" />
+
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/overlay_monsters"
+                android:background="@android:color/transparent"
+                android:scaleType="fitStart"
+                android:layout_weight="0.3"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:id="@+id/monstersButton"
+                android:adjustViewBounds="true" />
+
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/overlay_shop"
+                android:background="@android:color/transparent"
+                android:scaleType="fitStart"
+                android:layout_weight="0.3"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:id="@+id/shopButton"
+                android:adjustViewBounds="true" />
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
+                android:layout_marginStart="13dp"
+                android:layout_marginBottom="11dp"
+                android:layout_marginEnd="10dp"
+                android:layout_alignBottom="@+id/mapButton"
+                android:layout_alignTop="@+id/mapButton"
+                android:layout_alignStart="@+id/mapButton"
+                android:layout_alignEnd="@+id/mapButton"
+                android:id="@+id/MapContainer" />
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/overlay_map"
+                android:background="@android:color/transparent"
+                android:scaleType="fitEnd"
+                android:layout_gravity="top"
+                android:layout_marginStart="5dp"
+                android:adjustViewBounds="true"
+                android:id="@+id/mapButton" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="130dp"
+        android:layout_gravity="bottom"
+        android:gravity="bottom"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/catchButtonLayout">
+
+        <ImageButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:background="@android:color/transparent"
+            android:adjustViewBounds="true"
+            android:scaleType="fitStart"
+            android:src="@drawable/catch_button"
+            android:id="@+id/catch_button"/>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.8"
+            android:gravity="bottom|center"
+            android:id="@+id/detail_view_layout"
+            android:visibility="invisible">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="fitEnd"
+                android:adjustViewBounds="true"
+                android:src="@drawable/details_fire"
+                android:id="@+id/detail_view" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Monster Name"
+                android:id="@+id/detail_name"
+                android:layout_alignParentTop="true"
+                android:layout_alignStart="@+id/detail_view"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="20dp"
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:layout_width="380dp"
+                android:layout_height="55dp"
+                android:text="New Text"
+                android:id="@+id/detail_decription"
+                android:layout_alignParentBottom="true"
+                android:layout_alignStart="@+id/detail_view"
+                android:layout_marginStart="20dp"
+                android:textColor="@android:color/white"
+                android:layout_marginBottom="5dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="40dp"
+                android:layout_alignEnd="@+id/detail_view"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="#9999"
+                android:textColor="@android:color/white"
+                android:id="@+id/detail_number"/>
+
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="40dp"
+        android:visibility="gone"
+        android:id="@+id/caught_notification_layout">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"
+            android:src="@drawable/caught_view"
+            android:id="@+id/caught_view"/>
+
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:src="@drawable/close_button"
+            android:id="@+id/caught_close_button"
+            android:layout_alignStart="@+id/caught_view"
+            android:layout_marginStart="30dp" />
+
+        <ImageView
+            android:layout_width="170dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="80dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="20dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/placeholder"
+            android:id="@+id/caught_image"
+            android:layout_alignStart="@+id/caught_view" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="90dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="70dp"
+            android:gravity="center"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
+            android:textColor="@android:color/white"
+            android:id="@+id/caught_text"
+            android:layout_toEndOf="@+id/caught_image"
+            android:layout_alignParentEnd="false"
+            android:layout_alignEnd="@+id/caught_view" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginBottom="10dp"
+            android:layout_alignBottom="@+id/caught_image"
+            android:layout_alignEnd="@+id/caught_text"
+            android:layout_alignStart="@+id/caught_text"
+            android:scaleType="centerInside"
+            android:background="@android:color/transparent"
+            android:src="@drawable/view_button"
+            android:id="@+id/caught_view_button" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:id="@+id/tutorialLayout">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/tut1"
+            android:id="@+id/tutorialImage"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

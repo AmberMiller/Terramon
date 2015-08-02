@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/menu_background">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitCenter"
+        android:src="@drawable/catch_screen"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="24dp"
+        android:layout_marginTop="30dp"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:textSize="32sp"
+        android:text="00:00"
+        android:shadowColor="#000000"
+        android:shadowDx="3.0"
+        android:shadowDy="3.0"
+        android:shadowRadius="8.0"
+        android:id="@+id/timerText" />
+
+
+    <ImageView
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="108dp"
+        android:layout_marginEnd="48dp"
+        android:layout_alignParentEnd="true"
+        android:scaleType="fitCenter"
+        android:id="@+id/wrong1"/>
+
+    <ImageView
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="14dp"
+        android:layout_alignEnd="@id/wrong1"
+        android:layout_below="@+id/wrong1"
+        android:scaleType="fitCenter"
+        android:id="@+id/wrong2" />
+
+    <ImageView
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="14dp"
+        android:layout_below="@id/wrong2"
+        android:layout_alignEnd="@id/wrong2"
+        android:scaleType="fitCenter"
+        android:id="@+id/wrong3" />
+
+    <android.gesture.GestureOverlayView
+        android:layout_width="432dp"
+        android:layout_height="258dp"
+        android:layout_marginTop="65dp"
+        android:layout_marginStart="28dp"
+        android:gestureColor="@android:color/holo_green_light"
+        android:id="@+id/gestureOverlayView">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:alpha="0.4"
+            android:scaleType="fitCenter"
+            android:id="@+id/catchMonsterImage"/>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/swipeArrow"/>
+
+    </android.gesture.GestureOverlayView>
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="190dp"
+        android:layout_marginTop="60dp"
+        android:src="@drawable/gesture_feed"
+        android:id="@+id/gesture_feed_image"/>
+
+</RelativeLayout>

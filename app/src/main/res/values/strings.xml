@@ -1,0 +1,78 @@
+<resources>
+    <string name="app_name">Terramon</string>
+
+    <!-- Activities -->
+    <string name="title_activity_inventory">Inventory</string>
+    <string name="title_activity_monsters">Monsters</string>
+    <string name="title_activity_shop">Shop</string>
+    <string name="title_activity_launcher">Loading</string>
+
+    <!-- Hint Text -->
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="age">Age</string>
+    <string name="gender">Gender</string>
+    <string name="email">Email</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+
+    <!-- Dialog Text -->
+    <string name="ok">Ok</string>
+    <string name="enter">Enter</string>
+    <string name="cancel">Cancel</string>
+    <string name="saved">Data Saved!</string>
+    <string name="not_saved">Something went wrong. Try again later.</string>
+    <string name="signed_in">Signed In!</string>
+    <string name="login_before">Enter your password before continuing.</string>
+    <string name="first_name_error">Enter your first name.</string>
+    <string name="last_name_error">Enter your last name.</string>
+    <string name="no_email">Email Address Required.</string>
+    <string name="email_error">Please provide a valid email address.</string>
+    <string name="no_username">Username Required.</string>
+    <string name="username_error">Username cannot be more than 30 characters.</string>
+    <string name="password_error">Password must be between 5 and 20 characters in length AND contain at least one letter a\-z and at least one number 0\-9.</string>
+    <string name="no_password">Password Required.</string>
+    <string name="password_confirm_error">Confirm your Password.</string>
+    <string name="no_match">Passwords don\'t match.</string>
+    <string name="wrong_password">Wrong Password.</string>
+    <string name="wrong_user_or_pass">Wrong Username or Password.</string>
+    <string name="processing">Processing...</string>
+    <string name="please_wait">Please Wait.</string>
+    <string name="caught">Wow! You caught a </string>
+    <string name="reset">Are you sure you want to reset your game?</string>
+    <string name="reset_progress">You will lose ALL progress.</string>
+    <string name="purchase">Purchase</string>
+    <string name="upgrade_success">Upgrade Complete</string>
+    <string name="purchase_succes">Purchase Complete</string>
+    <string name="buy">Are you sure you want to buy</string>
+    <string name="buy2">for</string>
+    <string name="goToShop">Go to Shop</string>
+    <string name="full">Storage Full</string>
+    <string name="full_desc">You can\'t hold anymore monsters. You\'ll have to upgrade to the full version to catch more.</string>
+    <string name="capture_error">Oh no! The monster escaped!</string>
+
+    <!-- Text -->
+    <string name="default_password">default</string>
+    <string name="logged_in">Currently logged in as </string>
+    <string name="not_you">Not you?</string>
+    <string name="no_connection">No Internet Connection.
+                                 Turn on celluar data or connect to Wi-Fi to continue.</string>
+    <string name="money_sign">$</string>
+    <string name="exclamation">!</string>
+    <string name="question">\?</string>
+
+
+    <string name="action_settings">Settings</string>
+
+    <!-- Google Map API KEY -->
+    <string name="api_key">AIzaSyCM5w9M5BEM71wXXW7vn33nuwzPxOfqX8c</string>
+    <string name="facebook_app_id">394579714069716</string>
+
+    <string name="hello_world">Hello world!</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_catch">Catch</string>
+
+</resources>

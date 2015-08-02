@@ -1,0 +1,108 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    tools:context="com.fullsail.terramon.Fragments.Settings_MyAccount_SignIn_Fragment">
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="0.2"
+        android:layout_marginEnd="15dp"
+        android:layout_gravity="end"
+        android:adjustViewBounds="true"
+        android:background="@android:color/transparent"
+        android:scaleType="centerInside"
+        android:src="@drawable/newuser_button"
+        android:id="@+id/settings_newuser_button"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5"
+        android:orientation="horizontal"
+        android:layout_margin="10dp">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_gravity="center">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/text_field"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:id="@+id/signin_username_imageview" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/signin_username_imageview"
+                android:layout_alignEnd="@+id/signin_username_imageview"
+                android:layout_alignTop="@+id/signin_username_imageview"
+                android:layout_alignBottom="@+id/signin_username_imageview"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="5dp"
+                android:singleLine="true"
+                android:imeOptions="actionDone"
+                android:hint="@string/username"
+                android:id="@+id/signin_username_input" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_gravity="center">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/text_field"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:id="@+id/signin_password_imageview" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/signin_password_imageview"
+                android:layout_alignEnd="@+id/signin_password_imageview"
+                android:layout_alignTop="@+id/signin_password_imageview"
+                android:layout_alignBottom="@+id/signin_password_imageview"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="5dp"
+                android:singleLine="true"
+                android:inputType="textPassword"
+                android:imeOptions="actionDone"
+                android:hint="@string/password"
+                android:id="@+id/signin_password_input" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="0.3"
+        android:layout_marginBottom="10dp"
+        android:background="@android:color/transparent"
+        android:adjustViewBounds="true"
+        android:scaleType="centerInside"
+        android:src="@drawable/signin_button"
+        android:id="@+id/signin_button" />
+
+</LinearLayout>

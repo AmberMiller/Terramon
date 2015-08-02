@@ -1,0 +1,268 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.fullsail.terramon.Fragments.Settings_MyAccount_Profile_Fragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.28"
+        android:gravity="end">
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="10dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/goto_signin_button"
+            android:id="@+id/goto_signin_button"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:layout_marginBottom="15dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.21"
+        android:layout_marginBottom="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.34"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/text_field"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:id="@+id/first_name_imageview" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/first_name_imageview"
+                android:layout_alignEnd="@+id/first_name_imageview"
+                android:layout_alignTop="@+id/first_name_imageview"
+                android:layout_alignBottom="@+id/first_name_imageview"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="5dp"
+                android:singleLine="true"
+                android:inputType="textCapWords"
+                android:imeOptions="actionDone"
+                android:hint="@string/first_name"
+                android:id="@+id/first_name_input" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.34"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/text_field"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:id="@+id/profile_username_imageview" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/profile_username_imageview"
+                android:layout_alignEnd="@+id/profile_username_imageview"
+                android:layout_alignTop="@+id/profile_username_imageview"
+                android:layout_alignBottom="@+id/profile_username_imageview"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="5dp"
+                android:singleLine="true"
+                android:inputType="textCapWords"
+                android:imeOptions="actionDone"
+                android:hint="@string/last_name"
+                android:id="@+id/last_name_input" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.34"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/text_field"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:id="@+id/profile_email_imageview" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/profile_email_imageview"
+                android:layout_alignEnd="@+id/profile_email_imageview"
+                android:layout_alignTop="@+id/profile_email_imageview"
+                android:layout_alignBottom="@+id/profile_email_imageview"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="5dp"
+                android:singleLine="true"
+                android:inputType="textEmailAddress"
+                android:imeOptions="actionDone"
+                android:hint="@string/email"
+                android:id="@+id/email_input" />
+
+        </RelativeLayout>
+
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.21"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.33"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/text_field"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:id="@+id/username_imageview" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/username_imageview"
+                android:layout_alignEnd="@+id/username_imageview"
+                android:layout_alignTop="@+id/username_imageview"
+                android:layout_alignBottom="@+id/username_imageview"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="5dp"
+                android:singleLine="true"
+                android:inputType="textCapWords"
+                android:imeOptions="actionDone"
+                android:hint="@string/username"
+                android:id="@+id/username_input" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.33"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/text_field"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:id="@+id/password_imageview" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/password_imageview"
+                android:layout_alignEnd="@+id/password_imageview"
+                android:layout_alignTop="@+id/password_imageview"
+                android:layout_alignBottom="@+id/password_imageview"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="5dp"
+                android:singleLine="true"
+                android:inputType="textPassword"
+                android:imeOptions="actionDone"
+                android:hint="@string/password"
+                android:id="@+id/profile_password_input" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.33"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/text_field"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:id="@+id/confirm_password_imageview" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/confirm_password_imageview"
+                android:layout_alignEnd="@+id/confirm_password_imageview"
+                android:layout_alignTop="@+id/confirm_password_imageview"
+                android:layout_alignBottom="@+id/confirm_password_imageview"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="5dp"
+                android:singleLine="true"
+                android:inputType="textPassword"
+                android:imeOptions="actionDone"
+                android:hint="@string/confirm_password"
+                android:id="@+id/profile_confirm_password_input" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.3"
+        android:gravity="center">
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="10dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/submit_button"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:id="@+id/profile_submit_button" />
+
+    </LinearLayout>
+
+</LinearLayout>

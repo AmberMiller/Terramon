@@ -1,0 +1,45 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    android:orientation="vertical"
+    android:gravity="center"
+    tools:context="com.fullsail.terramon.Fragments.Settings_Fragment">
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="0.33"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:src="@drawable/myaccount_button"
+        android:background="@android:color/transparent"
+        android:scaleType="fitCenter"
+        android:id="@+id/myaccount_button"/>
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="0.33"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:src="@drawable/settings_button"
+        android:background="@android:color/transparent"
+        android:scaleType="fitCenter"
+        android:id="@+id/settings_button"/>
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="0.33"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:src="@drawable/help_button"
+        android:background="@android:color/transparent"
+        android:scaleType="fitCenter"
+        android:id="@+id/help_button"/>
+
+
+</LinearLayout>
