@@ -36,8 +36,8 @@ public class Mini_Map_Fragment extends MapFragment implements LocationListener {
     private static final long MIN_TIME = 1000;
     private static final float MIN_DISTANCE = 1f;
     private static final int SPAWN_LIMIT = 3;
-    private static final int VIEW_DISTANCE = 30;
-    private static final int CATCH_DISTANCE = 20;
+    private static final int VIEW_DISTANCE = 35;
+    private static final int CATCH_DISTANCE = 30;
     private static final int LOAD_DISTANCE = 40;
 
     private GoogleMap map;
@@ -451,6 +451,10 @@ public class Mini_Map_Fragment extends MapFragment implements LocationListener {
             /* Called from SpawnData when local spawns have been loaded */
             if (intent.getAction().equals(Globals.LOADED_SPAWNS)) {
                 Log.d(TAG, "Loaded Spawns Broadcast Received");
+                loadSpawnsForMarkers();
+            }
+
+            if (intent.getAction().equals(Globals.CAUGHT_MONSTER)) {
                 loadSpawnsForMarkers();
             }
         }

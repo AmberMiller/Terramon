@@ -279,8 +279,8 @@ public class Game_Fragment extends Fragment implements View.OnClickListener {
     /* Scale monster image based on distance */
     public void scaleMonsterImage (float distance) {
         if (monsterImage.getVisibility() == View.VISIBLE) {
-            monsterImage.setScaleX((1 / distance) * 3);
-            monsterImage.setScaleY((1 / distance) * 3);
+            monsterImage.setScaleX((1 / distance) * 4);
+            monsterImage.setScaleY((1 / distance) * 4);
         }
     }
 
@@ -522,6 +522,9 @@ public class Game_Fragment extends Fragment implements View.OnClickListener {
             if (resultCode == GameActivity.RESULT_OK) {
                 Log.d(TAG, "RESULT OK");
                 showCaughtDialog();
+
+                Intent intent = new Intent(Globals.CAUGHT_MONSTER);
+                getActivity().sendBroadcast(intent);
             } else {
                 Log.d(TAG, "RESULT NOT OK");
             }

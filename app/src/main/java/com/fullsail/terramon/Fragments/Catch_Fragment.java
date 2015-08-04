@@ -144,8 +144,6 @@ public class Catch_Fragment extends Fragment implements GestureOverlayView.OnGes
 
         int secs = numGestures * 4;
 
-
-
         //Set timerThread variable and execute passing in parameters
         timer = new timerThread();
         timer.execute(secs);
@@ -274,11 +272,9 @@ public class Catch_Fragment extends Fragment implements GestureOverlayView.OnGes
     /* Show alert dialog on catch error to notify user */
     private void catchError () {
         spawnData.catchSpawnedMonster(getActivity(), spawnID);
-
         timer.cancel(true);
 
-        if (getActivity() != null) {
-
+        if (!captureSuccess) {
             new AlertDialog.Builder(getActivity())
                     .setTitle(R.string.capture_error)
                     .setNeutralButton(getActivity().getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {

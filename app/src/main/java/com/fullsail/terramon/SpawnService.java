@@ -105,7 +105,7 @@ public class SpawnService extends Service {
                     spawnValue.put("userPointer", ParseUser.getCurrentUser().getObjectId());
                     spawnValue.put("userLocationLat", userGeoPoint.getLatitude());
                     spawnValue.put("userLocationLng", userGeoPoint.getLongitude());
-                    spawnValue.put("radius", 800);
+                    spawnValue.put("radius", 600);
 
                     ParseCloud.callFunctionInBackground("getSpawn", spawnValue, new FunctionCallback<ParseObject>() {
                         @Override
