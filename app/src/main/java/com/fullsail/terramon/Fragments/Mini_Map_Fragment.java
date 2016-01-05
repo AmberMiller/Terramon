@@ -155,7 +155,7 @@ public class Mini_Map_Fragment extends MapFragment implements LocationListener {
 //                    this);
 //        } else {
             Log.d(TAG, "GPS not enabled, using network provider");
-            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
                     MIN_TIME, // Milliseconds between updates.
                     MIN_DISTANCE, // Meters moved between updates.
                     this);
@@ -275,7 +275,7 @@ public class Mini_Map_Fragment extends MapFragment implements LocationListener {
     /* Get User's Current Location */
     public LatLng getCurrentLocation() {
         Log.d(TAG, "Getting Current Location...");
-        Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
         if (location != null) {
             double latitude = location.getLatitude();
